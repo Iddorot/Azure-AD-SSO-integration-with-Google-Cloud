@@ -34,9 +34,8 @@ AAD.COM - The domain name of the Azure AD
 1. Change the Application ID URI *to https://www.google.com/a<GCD.COM>*
 1. Under Permissions we added the following:
 
-![A screenshot of a computer
+![Alt text](Aspose.Words.37f72522-821f-43a6-a506-81afa41a3789.002.png)
 
-Description automatically generated with medium confidence](Aspose.Words.37f72522-821f-43a6-a506-81afa41a3789.002.png)
 
 1. Create an Azure group “*RZT\_APP\_G\_Suite\_Trafi*” and assign it to the application
 1. Add the test user to the group
