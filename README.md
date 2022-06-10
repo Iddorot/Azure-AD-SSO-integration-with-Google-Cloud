@@ -37,13 +37,13 @@ AAD.COM - The domain name of the Azure AD
 ![Alt text](Aspose.Words.37f72522-821f-43a6-a506-81afa41a3789.002.png)
 
 
-1. Create an Azure group “*RZT\_APP\_G\_Suite\_Trafi*” and assign it to the application
+1. Create an Azure group and assign it to the application
 1. Add the test user to the group
 
 
 1. Configure Google Cloud/G Suite Connector by Microsoft SSO
-   1. Add reiz.tech domain as a verified domain
-   1. Create a group “*RZT\_APP\_G\_Suite\_Trafi*”
+   1. Add AAD domain as a verified domain
+   1. Create a group replicated group
    1. Manage SSO profile assignments and add the new group scope to be with Organization's third-party SSO profile 
    1. Set up authentication with SSO with third party IDP
       1. Paste the Login and Logout URL
