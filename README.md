@@ -8,6 +8,10 @@ Author: Ido Rot
 
 Accomplish Azure AD SSO integration with Google Cloud / G Suite Connector by Microsoft, Automatic user provisioning from Azure AD to Google Cloud
 
+### Terminology
+GCD.COM - The domin name of the google cloud partner
+AAD.COM - The domain name of the Azure AD
+
 ## Technical Steps
 
 
@@ -16,23 +20,18 @@ Accomplish Azure AD SSO integration with Google Cloud / G Suite Connector by Mic
    1. Setting up Single Sign-On with SAML in the Google Cloud / G Suite Connector
       1. Basic SAML Configuration for Google Cloud Platform: 
 
-|Identifier (Entity ID)|google.com/a/<tgfr>|
+|Identifier (Entity ID)|google.com/a/<GCD.COM>|
 | :-: | :- |
-|Reply URL (Assertion Consumer Service URL)|<p>https://www.google.com/a/trafi.com/acs</p><p>https://www.google.com/</p>|
-|Sign-on URL|https://www.google.com/a/reiz.tech/ServiceLogin?continue=https://console.cloud.google.com/|
+|Reply URL (Assertion Consumer Service URL)|<p>https://www.google.com/a/<GCD.COM>/acs</p><p>https://www.google.com/</p>|
+|Sign-on URL|https://www.google.com/a/<AAD>.COM/ServiceLogin?continue=https://console.cloud.google.com/|
 |Relay State (Optional)||
 |Logout URL (Optional)|https://login.microsoftonline.com/common/wsfederation?wa=wsignout1.0|
 
 1. Download the SAML Signing Certificate(Base64)
-1. Application Link with Azure AD:
+1. Copy the Application Links 
 
-|Login URL|https://login.microsoftonline.com/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/saml2|
-| :-: | :- |
-|Azure AD Identifier|https://sts.windows.net/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/|
-|<p>Logout URL</p><p></p>|https://login.microsoftonline.com/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/saml2|
-
-1. From **App Registrations** add the Redirect URIs *https://www.google.com/a/trafi.com/acs* 
-1. Change the Application ID URI *to https://www.google.com/a/trafi.com*
+1. From **App Registrations** add the Redirect URIs *https://www.google.com/a/<GCD.COM>/acs* 
+1. Change the Application ID URI *to https://www.google.com/a<GCD.COM>*
 1. Under Permissions we added the following:
 
 ![A screenshot of a computer
