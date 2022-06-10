@@ -1,57 +1,105 @@
-# Azure AD SSO integration with Google Cloud> TDD
+# Azure AD SSO integration with Google Cloud TDD
 
-Author: <Your Name>
+Author: Ido Rot
 
 ## Introduction
 
 ### Rationale
 
-What are you trying to accomplish? What’s wrong with things the way they are now?
+Accomplish Azure AD SSO integration with Google Cloud / G Suite Connector by Microsoft, Automatic user provisioning from Azure AD to Google Cloud
 
-### Background
+## Technical Steps
 
-Describe any historical context that would be needed to understand the document, including legacy considerations.
 
-### Terminology
+1. Configure Azure AD single sign-on for Google Cloud / G Suite Connector
+   1. Adding Google Cloud / G Suite Connector from the **Enterprise Applications** gallery
+   1. Setting up Single Sign-On with SAML in the Google Cloud / G Suite Connector
+      1. Basic SAML Configuration for Google Cloud Platform: 
 
-If the document uses any special words or terms, list them here.
+|Identifier (Entity ID)|google.com/a/<tgfr>|
+| :-: | :- |
+|Reply URL (Assertion Consumer Service URL)|<p>https://www.google.com/a/trafi.com/acs</p><p>https://www.google.com/</p>|
+|Sign-on URL|https://www.google.com/a/reiz.tech/ServiceLogin?continue=https://console.cloud.google.com/|
+|Relay State (Optional)||
+|Logout URL (Optional)|https://login.microsoftonline.com/common/wsfederation?wa=wsignout1.0|
 
-### Non-Goals
+1. Download the SAML Signing Certificate(Base64)
+1. Application Link with Azure AD:
 
-If there are related problems that you have decided not to address with this design, but which someone might conceivably expect you to solve, then list them here.
+|Login URL|https://login.microsoftonline.com/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/saml2|
+| :-: | :- |
+|Azure AD Identifier|https://sts.windows.net/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/|
+|<p>Logout URL</p><p></p>|https://login.microsoftonline.com/9d9b5b64-d03d-4521-b2e7-2a9a16aa5d2b/saml2|
 
-## Proposed Design
+1. From **App Registrations** add the Redirect URIs *https://www.google.com/a/trafi.com/acs* 
+1. Change the Application ID URI *to https://www.google.com/a/trafi.com*
+1. Under Permissions we added the following:
 
-Start with a brief, high-level description of the solution. The following sections will go into more detail.
+![A screenshot of a computer
 
-### System Architecture
+Description automatically generated with medium confidence](Aspose.Words.37f72522-821f-43a6-a506-81afa41a3789.002.png)
 
-If the design consists of a collaboration between multiple large-scale components, list those components here — or better, include a diagram.
+1. Create an Azure group “*RZT\_APP\_G\_Suite\_Trafi*” and assign it to the application
+1. Add the test user to the group
 
-### Data Model
 
-Describe how the data is stored. This could include a description of the database schema.
+1. Configure Google Cloud/G Suite Connector by Microsoft SSO
+   1. Add reiz.tech domain as a verified domain
+   1. Create a group “*RZT\_APP\_G\_Suite\_Trafi*”
+   1. Manage SSO profile assignments and add the new group scope to be with Organization's third-party SSO profile 
+   1. Set up authentication with SSO with third party IDP
+      1. Paste the Login and Logout URL
+      1. Upload the SAML Signing Certificate(Base64)
+      1. Change Password URL <https://account.activedirectory.windowsazure.com/changepassword.aspx>
+   1. Create a replicated test user with the same info as part of the new group
+   1. Test the connection with the user
 
-### Interface/API Definitions
+1. Configure G Suite for automatic user provisioning
 
-Describe how the various components talk to each other. For example, if there are REST endpoints, describe the endpoint URL and the format of the data and parameters used.
+\**Provisioning works one way, which means changes in Azure AD are replicated to Google Cloud but not vice versa. Also, provisioning doesn't include passwords*
 
-### Business Logic
+1. Configure G Suite to support provisioning with Azure AD
+1. Create replicated provision Service Account [*svc_gsuite_trafi@reiz.tech*](mailto:svc_gsuite_trafi@reiz.tech) and add the user to the group 
+1. Create a new delegated admin role and assign it to the svc account
+   1. set the following privileges to enabled:
+      1. Organization Units > Read
+      1. Users
+      1. Groups
 
-If the design requires any non-trivial algorithms or logic, describe them.
 
-### Migration Strategy
+1. Configure automatic user provisioning **to** G Suite
+   1. Create provision Service Account 
+   1. Set up provisioning and change to Automatic
+   1. Authorize the Service account
+   1. Test the connection and save
+   1. Mappings section select Provision Azure Active Directory Groups.
+      1. Select the “email” mapping and change the mapping type to “Expression”
+      1. For expression enter
 
-If the design incurs non-backwards-compatible changes to an existing system, describe the process whereby entities that depend on the system are going to migrate to the new design.
+` `Join("@", NormalizeDiacritics(StripSpaces([displayName])), "reiz.tech")
 
-## Impact
+This operation starts the initial synchronization cycle of all users and groups defined in Scope in the Settings section. The initial cycle takes longer to perform than subsequent cycles, which occur approximately every 40 minutes as long as the Azure AD provisioning service is running.
 
-Describe the potential impacts of the design on overall performance, security, and other aspects of the system.
 
-## Risks
 
-If there are any risks or unknowns, list them here. Also if there is additional research to be done, mention that as well.
 
-## Alternatives
 
-If there are other potential solutions which were considered and rejected, list them here, as well as the reason why they were not chosen.
+
+
+
+
+
+
+References:
+
+1. [Tutorial: Azure AD SSO integration with Google Cloud / G Suite Connector by Microsoft - Microsoft Entra | Microsoft Docs](https://docs.microsoft.com/en-us/azure/active-directory/saas-apps/google-apps-tutorial#configure-google-cloudg-suite-connector-by-microsoft-sso)
+1. [Federating Google Cloud with Azure Active Directory |  Identity and access management](https://cloud.google.com/architecture/identity/federating-gcp-with-azure-active-directory)
+1. [Azure AD user provisioning and single sign-on  |  Identity and access management  |  Google Cloud](https://cloud.google.com/architecture/identity/federating-gcp-with-azure-ad-configuring-provisioning-and-single-sign-on)
+1. [Assign SSO profile to organizational units or groups - Google Workspace Admin Help](https://support.google.com/a/answer/10723804?hl=en)
+1. [Add a user alias domain or secondary domain - Google Workspace Admin Help](https://support.google.com/a/answer/7502379?hl=en)
+1. [Tutorial: Configure G Suite for automatic user provisioning with Azure Active Directory - Microsoft Entra | Microsoft Docs](https://docs.microsoft.com/en-us/azure/active-directory/saas-apps/g-suite-provisioning-tutorial)
+1. [Tutorial - Customize Azure Active Directory attribute mappings in Application Provisioning - Microsoft Entra | Microsoft Docs](https://docs.microsoft.com/en-us/azure/active-directory/app-provisioning/customize-application-attributes)
+
+
+
+
