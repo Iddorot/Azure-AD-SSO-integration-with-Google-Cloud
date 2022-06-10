@@ -15,7 +15,7 @@ AAD.COM - The domain name of the Azure AD
 ## Technical Steps
 
 
-1. Configure Azure AD single sign-on for Google Cloud / G Suite Connector
+###1. Configure Azure AD single sign-on for Google Cloud / G Suite Connector
    1. Adding Google Cloud / G Suite Connector from the **Enterprise Applications** gallery
    1. Setting up Single Sign-On with SAML in the Google Cloud / G Suite Connector
       1. Basic SAML Configuration for Google Cloud Platform: 
@@ -41,7 +41,7 @@ AAD.COM - The domain name of the Azure AD
 1. Add the test user to the group
 
 
-1. Configure Google Cloud/G Suite Connector by Microsoft SSO
+### 2. Configure Google Cloud/G Suite Connector by Microsoft SSO
    1. Add AAD domain as a verified domain
    1. Create a group replicated group
    1. Manage SSO profile assignments and add the new group scope to be with Organization's third-party SSO profile 
@@ -52,7 +52,7 @@ AAD.COM - The domain name of the Azure AD
    1. Create a replicated test user with the same info as part of the new group
    1. Test the connection with the user
 
-1. Configure G Suite for automatic user provisioning
+### 3. Configure G Suite for automatic user provisioning
 
 \**Provisioning works one way, which means changes in Azure AD are replicated to Google Cloud but not vice versa. Also, provisioning doesn't include passwords*
 
@@ -65,7 +65,7 @@ AAD.COM - The domain name of the Azure AD
       1. Groups
 
 
-1. Configure automatic user provisioning **to** G Suite
+### 4. Configure automatic user provisioning **to** G Suite
    1. Create provision Service Account 
    1. Set up provisioning and change to Automatic
    1. Authorize the Service account
@@ -88,7 +88,7 @@ This operation starts the initial synchronization cycle of all users and groups 
 
 
 
-References:
+### References:
 
 1. [Tutorial: Azure AD SSO integration with Google Cloud / G Suite Connector by Microsoft - Microsoft Entra | Microsoft Docs](https://docs.microsoft.com/en-us/azure/active-directory/saas-apps/google-apps-tutorial#configure-google-cloudg-suite-connector-by-microsoft-sso)
 1. [Federating Google Cloud with Azure Active Directory |  Identity and access management](https://cloud.google.com/architecture/identity/federating-gcp-with-azure-active-directory)
