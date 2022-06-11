@@ -1,4 +1,4 @@
-# Azure AD SSO integration with Google Cloud TDD
+# Azure AD SSO integration with Google Cloud 
 
 Author: Ido Rot
 
@@ -35,7 +35,7 @@ AAD.COM - The domain name of the Azure AD
 |Identifier (Entity ID)|google.com/a/<GCD.COM>|
 | :-: | :- |
 |Reply URL (Assertion Consumer Service URL)|<p>https://www.google.com/a/<GCD.COM>/acs</p><p>https://www.google.com/</p>|
-|Sign-on URL|https://www.google.com/a/<AAD>.COM/ServiceLogin?continue=https://console.cloud.google.com/|
+|Sign-on URL|https://www.google.com/a/<AAD.COM>/ServiceLogin?continue=https://console.cloud.google.com/|
 |Relay State (Optional)||
 |Logout URL (Optional)|https://login.microsoftonline.com/common/wsfederation?wa=wsignout1.0|
 
@@ -50,7 +50,7 @@ AAD.COM - The domain name of the Azure AD
 
 ### 2. Configure Google Cloud/G Suite Connector by Microsoft SSO
    1. Add AAD domain as a verified domain
-   2. Create a group replicated group
+   2. Create a replicated group same as Azure one
    3. Manage SSO profile assignments and add the new group scope to be with Organization's third-party SSO profile 
    4. Set up authentication with SSO with third party IDP
       1. Paste the Login and Logout URL
@@ -64,8 +64,9 @@ AAD.COM - The domain name of the Azure AD
 \**Provisioning works one way, which means changes in Azure AD are replicated to Google Cloud but not vice versa. Also, provisioning doesn't include passwords*
 
 1. Configure G Suite to support provisioning with Azure AD
-2. Create replicated provision Service Account [*svc_gsuite_trafi@reiz.tech*](mailto:svc_gsuite_trafi@reiz.tech) and add the user to the group 
-3. Create a new delegated admin role and assign it to the svc account
+2. Create replicated provision Service Account and add the user to the group
+3. Assign Super admin role to the svc account, after the initial cycle you can change the role to one that we are going to create
+4. Create a new delegated admin role 
    1. set the following privileges to enabled:
       1. Organization Units > Read
       1. Users
@@ -73,7 +74,7 @@ AAD.COM - The domain name of the Azure AD
 
 
 ### 4. Configure automatic user provisioning **to** G Suite
-   1. Create provision Service Account 
+   1. Create provision Service Account Same as google cloud and assign to the group
    2. Set up provisioning and change to Automatic
    3. Authorize the Service account
    4. Test the connection and save
@@ -81,7 +82,7 @@ AAD.COM - The domain name of the Azure AD
       1. Select the “email” mapping and change the mapping type to “Expression”
       1. For expression enter
 
-` `Join("@", NormalizeDiacritics(StripSpaces([displayName])), "reiz.tech")
+` `Join("@", NormalizeDiacritics(StripSpaces([displayName])), "<AAD.COM>")
 
 This operation starts the initial synchronization cycle of all users and groups defined in Scope in the Settings section. The initial cycle takes longer to perform than subsequent cycles, which occur approximately every 40 minutes as long as the Azure AD provisioning service is running.
 
