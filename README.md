@@ -63,7 +63,7 @@ AAD.COM - The domain name of the Azure AD
 
 \**Provisioning works one way, which means changes in Azure AD are replicated to Google Cloud but not vice versa. Also, provisioning doesn't include passwords*
 
-1. Configure G Suite to support provisioning with Azure AD
+1. Check if the box Trust internal,domain-owned apps is ticked
 2. Create replicated provision Service Account and add the user to the group
 3. Assign Super admin role to the svc account, after the initial cycle you can change the role to one that we are going to create
 4. Create a new delegated admin role 
@@ -80,16 +80,9 @@ AAD.COM - The domain name of the Azure AD
    4. Test the connection and save
    5. Mappings section select Provision Azure Active Directory Groups.
       1. Select the “email” mapping and change the mapping type to “Expression”
-      1. For expression enter
+      2. For expression enter
+   6.To enable the Azure AD provisioning service for G Suite, change the Provisioning Status to On in the Settings section 
 
 ` `Join("@", NormalizeDiacritics(StripSpaces([displayName])), "<AAD.COM>")
 
 This operation starts the initial synchronization cycle of all users and groups defined in Scope in the Settings section. The initial cycle takes longer to perform than subsequent cycles, which occur approximately every 40 minutes as long as the Azure AD provisioning service is running.
-
-
-
-
-
-
-
-
